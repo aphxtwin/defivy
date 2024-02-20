@@ -18,7 +18,7 @@ export default function Home() {
         <motion.div
             initial={{ opacity: 0 }}   // Starting opacity
             animate={{ opacity: 1 }}   // End opacity
-            transition={{ duration: 0.4 }} // Transition time
+            transition={{ duration: 1.5 }} // Transition time
             className='text-center flex flex-col items-center space-y-4'
         >
           <p className="text-lg md:text-2xl max-w-prose">
