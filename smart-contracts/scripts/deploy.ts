@@ -1,27 +1,60 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
 
-  const lockedAmount = ethers.parseEther("0.001");
+  // Deploy the contract 
+  const deposit = await ethers.deployContract('DepositContract');
+  await deposit.waitForDeployment();
 
-  const lock = await ethers.deployContract("Lock", [unlockTime], {
-    value: lockedAmount,
+  const contractAddress = await deposit.getAddress();
+  const depositedAmount = ethers.parseEther('0.0005');
+  const [owner] = await ethers.getSigners();
+
+  
+  const transaction = await owner.sendTransaction({
+    to: contractAddress,
+    value: depositedAmount
   });
+  console.log("transaction:", transaction.hash);
 
-  await lock.waitForDeployment();
+  const receipt = await transaction.wait();
 
-  console.log(
-    `Lock with ${ethers.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
-  );
+  if (receipt && receipt.status === 1) {
+    console.log("Transaction succeeded");
+  } else if (receipt && receipt.status === 0) {
+    console.log("Transaction failed");
+  } else {
+    console.log("Transaction status unknown");
+
+  }
+
+  console.log("balance:", await deposit.getContractBalance());
+
+
+  // Now Withdraw the funds
+
+  const withdrawTransaction = await deposit.withdraw(ethers.parseEther('0.0003'));
+
+  console.log("withdrawTransaction:", withdrawTransaction.hash);
+
+  const withdrawReceipt = await withdrawTransaction.wait();
+
+  if (withdrawReceipt && withdrawReceipt.status === 1) {
+    console.log("Withdraw Transaction succeeded| New Balance =>", await deposit.getContractBalance());
+    
+  } else if (withdrawReceipt && withdrawReceipt.status === 0) {
+    console.log("Withdraw Transaction failed");
+  } else {
+    console.log("Withdraw Transaction status unknown");
+
+  }
+
+
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
