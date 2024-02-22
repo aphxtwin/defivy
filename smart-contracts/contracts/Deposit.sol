@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-// import "@openzeppelin/contracts/access/Ownable.sol"; // Add import statement for Ownable contract
-
-// is ownable means that the contract inherits from the OpenZeppelin Ownable contract
 contract DepositContract { // Inherit from Ownable contract
 
     // Event declarations: this is useful to communicate to the external world that 
