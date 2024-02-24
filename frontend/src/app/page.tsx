@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { FaGithub } from 'react-icons/fa';
 import { motion } from "framer-motion";
 import Link from 'next/link';
-
+import ButtonComponent from './components/getAssetPrice';
 
 export default function Home() {
   return (
@@ -18,7 +18,7 @@ export default function Home() {
         <motion.div
             initial={{ opacity: 0 }}   // Starting opacity
             animate={{ opacity: 1 }}   // End opacity
-            transition={{ duration: 1.5 }} // Transition time
+            transition={{ duration: 0.5 }} // Transition time
             className='text-center flex flex-col items-center space-y-4'
         >
           <p className="text-lg md:text-2xl max-w-prose">
@@ -26,7 +26,7 @@ export default function Home() {
           </p>
           <Link href='https://github.com/aphxtwin/defivy' className="mt-4 bg-blue-600 hover:bg-blue-700 text-xl text-white font-semibold flex items-center gap-x-2 py-3 px-5 rounded"><FaGithub size={30}/> See the repo </Link>
         </motion.div>
-       
+        <ButtonComponent />
       </div>
     </main>
   );
